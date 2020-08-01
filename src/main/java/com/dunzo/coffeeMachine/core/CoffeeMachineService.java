@@ -91,14 +91,15 @@ public class CoffeeMachineService {
         Beverage beverage = db.getBeverage(beverageName);
 
 
-        Callable<Beverage> task = () -> {
+        Callable<Beverage> makeBeverageTask = () -> {
             checkIfIngredientsAvailable(beverage);  // check if all the ingredients are available
             checkIfIngredientsSufficient(beverage); // check if all the ingredients are present in sufficient quantities
             makeBeverage(beverage); // make the beverage & update inventory
+            System.out.println(beverageName + " is prepared");
             return beverage;
         };
 
-       Future<Beverage> beverageFut= executorService.submit(task);
+       Future<Beverage> beverageFut= executorService.submit(makeBeverageTask);
         return beverageFut;
     }
 

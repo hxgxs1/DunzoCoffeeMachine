@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class IngredientQuantity {
 
-    private AtomicInteger quantity; // provides wrapper classes for int that can be used to achieve this atomic operation without usage of Synchronization.
+    private AtomicInteger quantity; // provides wrapper class for int that can be used to achieve this atomic operation without usage of Synchronization.
 
     public IngredientQuantity(AtomicInteger quantity) {
         this.quantity = quantity;

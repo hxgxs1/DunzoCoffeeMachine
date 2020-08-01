@@ -5,7 +5,6 @@ import com.dunzo.coffeeMachine.entities.Beverage;
 import com.dunzo.coffeeMachine.entities.Ingredient;
 import com.dunzo.coffeeMachine.exception.IngredientNotAvailableException;
 import com.dunzo.coffeeMachine.exception.NotEnoughQuantityException;
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,13 +98,28 @@ public class MachineTest {
 
 
     @Test
-    public void testCase() throws NotEnoughQuantityException, IngredientNotAvailableException, ExecutionException, InterruptedException {
+    public void testCase1() throws ExecutionException, InterruptedException {
         Throwable caught = null;
-        Future<Beverage> tea=service.getBeverage("hot_tea");
-        assertEquals("hot_tea", tea.get().getName());
+        try {
+            Future<Beverage> tea = service.getBeverage("hot_tea");
+            if(tea.isDone()){
+                assertEquals("hot_tea", tea.get().getName());
+            }
+        }catch (Exception e){
+            caught=e;
+        }
+        assertNull(caught);
 
-        Future<Beverage> coffee=service.getBeverage("hot_coffee");
-        assertEquals("hot_coffee", coffee.get().getName());
+        try {
+            Future<Beverage> coffee = service.getBeverage("hot_coffee");
+            if(coffee.isDone()) {
+                assertEquals("hot_coffee", coffee.get().getName());
+            }
+        }catch (Exception e){
+            caught=e;
+        }
+        assertNull(caught);
+
         try {
             Future<Beverage> greenTea = service.getBeverage("green_tea");
             assertEquals("green_tea", greenTea.get().getName());
@@ -114,7 +128,6 @@ public class MachineTest {
         }
         assertNotNull(caught);
         assertEquals(caught.getMessage(), "com.dunzo.coffeeMachine.exception.IngredientNotAvailableException: green_tea cannot be prepared because green_mixture is not available");
-
 
         try {
             Future<Beverage> blackTea = service.getBeverage("black_tea");
@@ -128,13 +141,18 @@ public class MachineTest {
 
 
     @Test
-    public void testCase2() throws NotEnoughQuantityException, IngredientNotAvailableException, ExecutionException, InterruptedException {
+    public void testCase2() throws ExecutionException, InterruptedException {
         Throwable caught = null;
         Future<Beverage> tea=service.getBeverage("hot_tea");
-        assertEquals("hot_tea", tea.get().getName());
-
+        if(tea.isDone()){
+            assertEquals("hot_tea", tea.get().getName());
+        }
         Future<Beverage> blackTea=service.getBeverage("black_tea");
-        assertEquals("black_tea", blackTea.get().getName());
+        if(blackTea.isDone()){
+            assertEquals("black_tea", blackTea.get().getName());
+        }
+
+
         try {
             Future<Beverage> greenTea = service.getBeverage("green_tea");
             assertEquals("green_tea", greenTea.get().getName());
@@ -155,13 +173,17 @@ public class MachineTest {
     }
 
     @Test
-    public void testCase3() throws NotEnoughQuantityException, IngredientNotAvailableException, ExecutionException, InterruptedException {
+    public void testCase3() throws ExecutionException, InterruptedException {
         Throwable caught = null;
         Future<Beverage> hotCoffee = service.getBeverage("hot_coffee");
-        assertEquals("hot_coffee", hotCoffee.get().getName());
+        if(hotCoffee.isDone()) {
+            assertEquals("hot_coffee", hotCoffee.get().getName());
+        }
 
         Future<Beverage> blackTea=service.getBeverage("black_tea");
-        assertEquals("black_tea", blackTea.get().getName());
+        if(blackTea.isDone()){
+            assertEquals("black_tea", blackTea.get().getName());
+        }
         try {
             Future<Beverage> greenTea = service.getBeverage("green_tea");
             assertEquals("green_tea", greenTea.get().getName());

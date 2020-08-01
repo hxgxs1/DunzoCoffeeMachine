@@ -53,7 +53,6 @@ public class InMemoryDB {
     }
 
     public IngredientQuantity getQuantity(Ingredient ingredient){
-        //todo: override equals in Ingredient
         return inventory.get(ingredient);
     }
 
