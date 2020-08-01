@@ -87,7 +87,7 @@ public class CoffeeMachineService {
      * @throws IngredientNotAvailableException
      * @throws NotEnoughQuantityException
      */
-    public Future<Beverage> getBeverage(String beverageName) throws IngredientNotAvailableException, NotEnoughQuantityException {
+    public Future<Beverage> getBeverage(String beverageName){
         Beverage beverage = db.getBeverage(beverageName);
 
 
