@@ -42,7 +42,8 @@ public class CoffeeMachineService {
      */
     private void checkIfIngredientsAvailable(Beverage beverage) throws IngredientNotAvailableException {
 
-        Set<Ingredient> ingredientsInMachine=db.getAllIngredients();
+        Set<Ingredient> ingredientsInMachine=db.getAllIngredientsFromInventory();
+
         for(Ingredient ingredient: beverage.getIngredients().keySet()) {
             if (!ingredientsInMachine.contains((ingredient))) {
                 throwNotAvailableException(beverage, ingredient);
@@ -58,8 +59,9 @@ public class CoffeeMachineService {
     private void checkIfIngredientsSufficient(Beverage beverage) throws NotEnoughQuantityException{
 
         for(Map.Entry<Ingredient, Integer> i: beverage.getIngredients().entrySet()){
-            IngredientQuantity inMachineQuantity=db.getQuantity(i.getKey());
-            if(!inMachineQuantity.checkIfEnoughQuantity(i.getValue()).isPresent()){
+            IngredientQuantity inMachineQuantity=db.getQuantityFromInventory(i.getKey());
+
+            if(!inMachineQuantity.checkIfEnoughQuantity(i.getValue())){
                 throwInsufficientException(beverage, i.getKey());
             }
         }
@@ -73,8 +75,9 @@ public class CoffeeMachineService {
     private void makeBeverage(Beverage beverage) throws NotEnoughQuantityException {
 
         for(Map.Entry<Ingredient, Integer> i: beverage.getIngredients().entrySet()){
-            IngredientQuantity inMachineQuantity=db.getQuantity(i.getKey());
-            if(!inMachineQuantity.consumeQuantity(i.getValue()).isPresent()){
+
+            IngredientQuantity inMachineQuantity=db.getQuantityFromInventory(i.getKey());
+            if(!inMachineQuantity.consumeQuantity(i.getValue())){
                 throwInsufficientException(beverage, i.getKey());
             }
         }
@@ -92,6 +95,7 @@ public class CoffeeMachineService {
 
 
         Callable<Beverage> makeBeverageTask = () -> {
+
             checkIfIngredientsAvailable(beverage);  // check if all the ingredients are available
             checkIfIngredientsSufficient(beverage); // check if all the ingredients are present in sufficient quantities
             makeBeverage(beverage); // make the beverage & update inventory

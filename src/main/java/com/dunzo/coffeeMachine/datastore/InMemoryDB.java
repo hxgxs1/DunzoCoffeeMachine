@@ -48,11 +48,11 @@ public class InMemoryDB {
         return beverages.get(name);
     }
 
-    public Set<Ingredient> getAllIngredients(){
+    public Set<Ingredient> getAllIngredientsFromInventory(){
         return inventory.keySet();
     }
 
-    public IngredientQuantity getQuantity(Ingredient ingredient){
+    public IngredientQuantity getQuantityFromInventory(Ingredient ingredient){
         return inventory.get(ingredient);
     }
 

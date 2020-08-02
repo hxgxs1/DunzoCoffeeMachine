@@ -13,21 +13,19 @@ public class IngredientQuantity {
         this.quantity = quantity;
     }
 
-    public Optional<String>  checkIfEnoughQuantity(int needed) {
+    public Boolean  checkIfEnoughQuantity(int needed) {
         if (this.quantity.get() < needed)
-            return Optional.empty();
-        return Optional.of("Enough ingredient for this beverage");
+            return false;
+
+        return true;
     }
 
     public void updateQuantity(int delta){
         this.quantity.addAndGet(delta);
     }
 
-    public Optional<String> consumeQuantity(int needed){
-        int oldValue=quantity.get();
-        if(oldValue<needed)
-            return Optional.empty();
-        quantity.getAndAdd(-needed);
-        return Optional.of("Inventory has been updated");
+    public Boolean consumeQuantity(int needed){ //Todo: check if Optional<String> makes sense
+        int oldValue=quantity.getAndUpdate(quant-> quant>=needed? quant-needed : quant);
+        return oldValue >= needed;
     }
 }

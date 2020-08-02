@@ -91,7 +91,7 @@ public class MachineTest {
         Beverage greenTea=new Beverage("green_tea", greenTeaIngredients);
         beverages.add(greenTea);
 
-        this.service=new CoffeeMachineService(3, totalQuantity, beverages);
+        this.service=new CoffeeMachineService(4, totalQuantity, beverages);
 
     }
 
